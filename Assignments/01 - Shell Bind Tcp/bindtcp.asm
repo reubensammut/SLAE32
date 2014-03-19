@@ -25,7 +25,7 @@ _start:
 	push edx	 ; sin_zero[4-7]
 	push edx	 ; sin_zero[0-3]
 	push edx	 ; sin_addr(0.0.0.0)
-	push word 0x5704 ; sin_port
+	push word 0x5704 ; sin_port (1111 = 0x0457)
 	push word 0x2	 ; sin_family = AF_INET (2)
 	mov ebp, esp
 	push 0x10	 ; socklen
