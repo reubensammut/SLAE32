@@ -11,7 +11,8 @@ typedef struct
 	AES_KEY key;
 } aes_ctr_t;
 
-void init_aes_ctr(aes_ctr_t *, const unsigned char *iv[8], const unsigned char *enc_key);
+void init_aes_ctr(aes_ctr_t *, unsigned char (*iv)[8], const unsigned char *enc_key, int);
 void aes_ctr_enc(unsigned char *in, unsigned char *out, int len, aes_ctr_t *);
+void aes_ctr_enc_msg(unsigned char *msg, int len, aes_ctr_t *);
 
 #endif //_AESCTRCOMMON_H_
