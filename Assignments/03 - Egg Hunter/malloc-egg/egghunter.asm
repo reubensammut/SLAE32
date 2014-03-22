@@ -10,7 +10,6 @@ _start:
 	cld
 	xor edx, edx
 	mov ebx, edx
-	mov ecx, edx
 
 nextpage:
 	or   bx, 0xfff
