@@ -93,6 +93,11 @@ parent:
 	xor eax, eax
 	mov ecx, eax
 	cdq
+
+	mov ebx, esi	; clientfd
+	mov al, 0x6	; close
+	int 0x80
+
 	xor ebx, ebx	; ebx = 0
 	dec ebx		; ebx = -1
 	mov al, 0x7     ; waitpid
