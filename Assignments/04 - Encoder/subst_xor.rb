@@ -30,8 +30,7 @@ class Metasploit3 < Msf::Encoder::Xor
   end
 
   #
-  # Returns the decoder stub that is adjusted for the size of
-  # the buffer being encoded
+  # Returns the decoder stub and sets the key offset
   #
   def decoder_stub(state)
     len = state.buf.length 
@@ -59,10 +58,16 @@ class Metasploit3 < Msf::Encoder::Xor
     return decoder
   end
 
+  #
+  # Creates the dictionary from which each shellcode byte should be chosen
+  #
   def encode_begin(state)
     @dictionary = state.buf.split(//).sort.uniq.shuffle.join
   end
 
+  #
+  # Encode one byte by looking in the dictionary
+  #
   def encode_block(state, block)
     buf = ((@dictionary.index(block[0]) + 1) ^ state.key).chr
 
@@ -70,7 +75,7 @@ class Metasploit3 < Msf::Encoder::Xor
   end
 
   #
-  # Appends the encoded context portion.
+  # Appends the key 2 times (for self xor i.e. end loop) + dictionary
   #
   def encode_end(state)
     state.encoded << ([state.key].pack('C')*2) + @dictionary
