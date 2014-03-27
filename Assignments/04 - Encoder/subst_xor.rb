@@ -41,7 +41,7 @@ class Metasploit3 < Msf::Encoder::Xor
         "\x5f" +			 # pop    edi
         "\x83\xc7\x22" +		 # add    edi, 0x22
         "\x8d\x37" +			 # lea    esi, [edi]
-        "\x83\xc6" + [len+1].pack('C') + # add    esi, (len + 1)
+        "\x83\xc6" + [len].pack('C') + 	 # add    esi, (len + 1)
         "\x31\xc0" +			 # xor    eax, eax
         "\x8a\x07" +			 # mov     al, BYTE PTR [edi]
         "\x34X" +			 # xor     al, (xor key)
@@ -75,10 +75,10 @@ class Metasploit3 < Msf::Encoder::Xor
   end
 
   #
-  # Appends the key 2 times (for self xor i.e. end loop) + dictionary
+  # Appends the key + dictionary
   #
   def encode_end(state)
-    state.encoded << ([state.key].pack('C')*2) + @dictionary
+    state.encoded << [state.key].pack('C') + @dictionary
   end
 
 
