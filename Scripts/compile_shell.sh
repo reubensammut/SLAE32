@@ -13,11 +13,13 @@ unsigned char code[] =
 #include "$SHELL"
 ;
 
+typedef int (*shellfunc_t)();
+
 int main(int argc, char *argv[])
 {
 	printf("Shellcode Length: %d\\n", (int)strlen(code));
 
-	int (*ret)() = (int(*)())code;
+	shellfunc_t ret = (shellfunc_t)code;
 
 	ret();
 

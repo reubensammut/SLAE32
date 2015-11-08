@@ -50,8 +50,6 @@ splitHead str@(x:xs)
   where lenX = length x
         modSplit (a, b) = reverse a : [b]
         
-  	
-
 pushify :: String -> TrimType -> IO ()
 pushify s t = mapM_ putStrLn $ hexList s
   where splitArg
@@ -70,11 +68,8 @@ parse ["--help"]	 = usage
 parse ["--trim", x] 	 = pushify x Trim >> trimLength x
 parse ["--trim-safe", x] = pushify x TrimSafe
 parse [x] 		 = pushify x TrimNone 
-parse _			 = do
-			     usage
-			     exitWith $ ExitFailure 1
+parse _			 = usage >> exitWith (ExitFailure 1)
 
 main :: IO ()
-main = do
-    args <- getArgs
-    parse args
+main = parse =<< getArgs
+
