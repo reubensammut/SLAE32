@@ -67,18 +67,18 @@ failed:	xor eax, eax
 	mov al, 0x4	 ; write
 	mov bl, 0x2	 ; stderr
 
-	push word 0x0a64
-	push 0x656c6961
-	push 0x66206e6f
-	push 0x69746365
-	push 0x6e6e6f43
-	push 0x205d215b
+	push word 0x0a64 ;
+	push 0x656c6961	 ;
+	push 0x66206e6f	 ;
+	push 0x69746365	 ;
+	push 0x6e6e6f43	 ;
+	push 0x205d215b	 ; put "[!] Connection failed" on stack
 
-	lea ecx, [esp]
-	mov dl, 0x16
+	lea ecx, [esp]	 ; loc of message on esp
+	mov dl, 0x16	 ; message length
 	int 0x80
 
-	mov al, 0x1
-	mov bl, 0x1
+	mov al, 0x1	 ; exit
+	mov bl, 0x1	 ; status code = 1
 	int 0x80
 
