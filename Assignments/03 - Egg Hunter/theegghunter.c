@@ -11,7 +11,7 @@ EGG
 
 int main(int argc, char *argv[])
 {
-	unsigned char *egg = malloc( 80 );
+	unsigned char *egg = malloc( 86 );
 	int (*ret)() = (int(*)())egghunter;
 	
 	memcpy( egg, EGG, 4 );
